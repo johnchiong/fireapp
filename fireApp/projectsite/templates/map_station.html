@@ -1,4 +1,6 @@
-{% extends 'base.html' %} {% load static %} {% block content %}
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 
 <div class="page-inner">
@@ -58,7 +60,7 @@
   }).addTo(map);
 
   var markers = [];
-  var markerData = {{ fireIncidents|safe }};
+  var markerData = {{ fireStations|safe }};
 
   markerData.forEach(function (data) {
     var latitude = parseFloat(data.latitude);

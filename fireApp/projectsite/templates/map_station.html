@@ -58,7 +58,7 @@
   }).addTo(map);
 
   var markers = [];
-  var markerData = {{ fireStations|safe }};
+  var markerData = {{ fireIncidents|safe }};
 
   markerData.forEach(function (data) {
     var latitude = parseFloat(data.latitude);

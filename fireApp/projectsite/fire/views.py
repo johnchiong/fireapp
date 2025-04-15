@@ -35,7 +35,6 @@ def PieCountbySeverity(request):
         rows = cursor.fetchall()
 
     if rows:
-        # Construct the dictionary with severity level as keys and count as values
         data = {severity: count for severity, count in rows}
     else:
         data = {}
@@ -51,12 +50,10 @@ def LineCountbyMonth(request):
     incidents_per_month = Incident.objects.filter(date_time__year=current_year) \
         .values_list('date_time', flat=True)
 
-    # Counting the number of incidents per month
     for date_time in incidents_per_month:
         month = date_time.month
         result[month] += 1
 
-    # If you want to convert month numbers to month names, you can use a dictionary mapping
     month_names = {
         1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun',
         7: 'Jul', 8: 'Aug', 9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec'
@@ -82,3 +79,35 @@ def map_station(request):
     }
 
     return render(request, 'map_station.html', context)
+
+def map_incidents(request):
+    fireIncidents = Incident.objects.select_related('location').values(
+        'location__city',
+        'location__latitude',
+        'location__longitude',
+        'description',
+        'date_time',
+        'severity_level'
+    )
+
+    incident_list = []
+    for fi in fireIncidents:
+        incident_list.append({
+            'city': fi['location__city'],
+            'latitude': float(fi['location__latitude']),
+            'longitude': float(fi['location__longitude']),
+            'description': fi['description'],
+            'date': fi['date_time'].strftime('%Y-%m-%d %H:%M') if fi['date_time'] else 'N/A',
+            'severity': fi['severity_level']
+        })
+
+    cities = Incident.objects.select_related('location') \
+        .values_list('location__city', flat=True).distinct()
+
+    context = {
+        'fireIncidents': incident_list, 
+        'cities': cities,
+    }
+
+    return render(request, 'map_incidents.html', context)
+

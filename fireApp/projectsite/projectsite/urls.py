@@ -11,6 +11,7 @@ urlpatterns = [
     path('chart/', PieCountbySeverity, name='chart'),
 
     path('stations', views.map_station, name='map-station'),
+    path('incidents', views.map_incidents, name='map-incidents'),
 
 
 ]

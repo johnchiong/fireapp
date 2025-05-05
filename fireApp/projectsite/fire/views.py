@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from fire.models import Locations, Incident, FireStation
+from fire.models import Locations, Incident, FireStation, Firefighters, FireTruck, WeatherConditions
 
 from django.db import connection
 from django.http import JsonResponse
@@ -289,20 +289,3 @@ class FireStationDeleteView(DeleteView):
     model = FireStation
     template_name = "firestation_del.html"
     success_url = reverse_lazy('firestation-list')
-
-def add_location(request):
-    messages.success(request, "Location added successfully!")
-    return redirect('location-list')
-
-def view_location(request, location_id):
-    location = get_object_or_404(Location, id=location_id)
-    messages.info(request, f"Viewing details for {location.name}.")
-    return redirect('location-detail', location_id=location_id)
-
-def update_location(request, location_id):
-    messages.success(request, "Location updated successfully!")
-    return redirect('location-list')
-
-def delete_location(request, location_id):
-    messages.error(request, "Location deleted successfully!")
-    return redirect('location-list')

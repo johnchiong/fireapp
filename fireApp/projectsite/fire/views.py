@@ -13,6 +13,9 @@ from django.urls import reverse_lazy
 
 from fire.forms import LocationForm, IncidentForm, FireStationForm, FirefighterForm, FireTruckForm, WeatherConditionForm
 
+from django.contrib import messages
+from django.shortcuts import redirect, get_object_or_404
+
 class HomePageView(ListView):
     model = Locations
     context_object_name = 'home'
@@ -286,3 +289,20 @@ class FireStationDeleteView(DeleteView):
     model = FireStation
     template_name = "firestation_del.html"
     success_url = reverse_lazy('firestation-list')
+
+def add_location(request):
+    messages.success(request, "Location added successfully!")
+    return redirect('location-list')
+
+def view_location(request, location_id):
+    location = get_object_or_404(Location, id=location_id)
+    messages.info(request, f"Viewing details for {location.name}.")
+    return redirect('location-detail', location_id=location_id)
+
+def update_location(request, location_id):
+    messages.success(request, "Location updated successfully!")
+    return redirect('location-list')
+
+def delete_location(request, location_id):
+    messages.error(request, "Location deleted successfully!")
+    return redirect('location-list')

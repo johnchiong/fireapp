@@ -23,9 +23,19 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
     <link rel="stylesheet" href="{% static 'css/atlantis.min.css' %}" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet"/>
 
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link rel="stylesheet" href="{% static 'css/demo.css' %}" />
+    <style>
+      .toast-top-center {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+      }
+    </style>
   </head>
   <body>
     {% include 'includes/toast.html' %}
@@ -267,7 +277,7 @@
     <script src="{% static 'js/core/jquery.3.2.1.min.js' %}"></script>
     <script src="{% static 'js/core/popper.min.js' %}"></script>
     <script src="{% static 'js/core/bootstrap.min.js' %}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
 
     <!-- jQuery UI -->
     <script src="{% static 'js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' %}"></script>
@@ -282,9 +292,29 @@
     <script src="{% static 'js/plugin/jqvmap/maps/jquery.vmap.world.js' %}"></script>
     <script src="{% static 'js/plugin/sweetalert/sweetalert.min.js' %}"></script>
     <script src="{% static 'js/atlantis.min.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
     {% block chart %}
 
+    <script>
+      const toastDiv = document.getElementById("toast-data");
+      if (toastDiv) {
+        const raw = toastDiv.dataset.messages;
+        if (raw && raw.trim().length > 0) {
+          try {
+            const messages = JSON.parse("[" + raw + "]");
+            messages.forEach(msg => {
+              toastr.options.positionClass = "toast-top-center";
+              toastr[msg.level](msg.text);
+            });
+          } catch (e) {
+            console.error("Toast message parse error:", e);
+          }
+        }
+      }
+    </script>    
+    
     {% endblock %}
   </body>
 </html>

@@ -9,7 +9,9 @@
                         <div class="card-title">Edit Fire Fighters</div>
                         <div class="card-category">Page Subtitle</div>
                     </div>
-
+                    <div id="toast-data"
+                        data-messages='{% for message in messages %}{"level": "{{ message.tags }}", "text": "{{ message|escapejs }}" }{% if not forloop.last %},{% endif %}{% endfor %}'>
+                    </div>
                     <div class="col-md-6">
                         <div class="card-body">
                             <form class="" action="" method="post" novalidate>

@@ -9,6 +9,9 @@
                         <div class="card-title">List of Location</div>
                         <div class="card-category">Page Subtitle</div>
                     </div>
+                    <div id="toast-data"
+                        data-messages='{% for message in messages %}{"level": "{{ message.tags }}", "text": "{{ message|escapejs }}" }{% if not forloop.last %},{% endif %}{% endfor %}'>
+                    </div>
                     <br />
                         <div class="col-md-12 row">
                             <div class="col-md-12">

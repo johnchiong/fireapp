@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views.generic.list import ListView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from fire.models import Locations, Incident, FireStation
 
 from django.db import connection
@@ -8,6 +9,9 @@ from django.db.models.functions import ExtractMonth
 
 from django.db.models import Count
 from datetime import datetime
+from django.urls import reverse_lazy
+
+from fire.forms import LocationForm, IncidentForm, FireStationForm, FirefighterForm, FireTruckForm, WeatherConditionForm
 
 class HomePageView(ListView):
     model = Locations
@@ -214,4 +218,25 @@ def multipleBarbySeverity(request):
 
     return JsonResponse(result)
 
-    
+class LocationList(ListView):
+    model = Locations
+    context_object_name = 'location'
+    template_name = 'location_list.html'
+    paginate_by = 5
+
+class LocationCreateView(CreateView):
+    model = Locations
+    form_class = LocationForm
+    template_name = 'location_add.html'
+    success_url = reverse_lazy('location-list')
+
+class LocationUpdateView(UpdateView):
+    model = Locations
+    form_class = LocationForm
+    template_name = "location_edit.html"
+    success_url = reverse_lazy('location-list')
+
+class LocationDeleteView(DeleteView):
+    model = Locations
+    template_name = "location_del.html"
+    success_url = reverse_lazy('location-list')

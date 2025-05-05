@@ -263,3 +263,26 @@ class IncidentDeleteView(DeleteView):
     model = Incident
     template_name = "incident_del.html"
     success_url = reverse_lazy('incident-list')
+
+class FireStationtList(ListView):
+    model = FireStation
+    context_object_name = 'firestation'
+    template_name = 'firestation_list.html'
+    paginate_by = 5
+
+class FireStationCreateView(CreateView):
+    model = FireStation
+    form_class = FireStationForm
+    template_name = 'firestation_add.html'
+    success_url = reverse_lazy('firestation-list')
+
+class FireStationUpdateView(UpdateView):
+    model = FireStation
+    form_class = FireStationForm
+    template_name = "firestation_edit.html"
+    success_url = reverse_lazy('firestation-list')
+
+class FireStationDeleteView(DeleteView):
+    model = FireStation
+    template_name = "firestation_del.html"
+    success_url = reverse_lazy('firestation-list')
